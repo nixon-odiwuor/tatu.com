@@ -41,6 +41,29 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
+        <!-- Booking form -->
+<form id="bookingForm" class="booking-form" aria-labelledby="bookingHeading">
+  <h2 id="bookingHeading">Book a Session</h2>
+
+  <label for="bf-name">Full name</label>
+  <input id="bf-name" name="name" type="text" placeholder="Your full name" required>
+
+  <label for="bf-email">Email</label>
+  <input id="bf-email" name="email" type="email" placeholder="you@example.com" required>
+
+  <label for="bf-phone">Phone</label>
+  <input id="bf-phone" name="phone" type="tel" placeholder="07XXXXXXXX" required>
+
+  <label for="bf-message">Message / Notes</label>
+  <textarea id="bf-message" name="message" rows="4" placeholder="Anything we should know?"></textarea>
+
+  <button type="submit">Send booking</button>
+
+  <p id="bookingStatus" aria-live="polite" role="status"></p>
+</form>
+
+<footer>
+
     </style>
 </head>
 <body class="smooth-scroll bg-warm-gray">
@@ -635,5 +658,6 @@
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9838c48eb2573517',t:'MTc1ODYxNzE0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
