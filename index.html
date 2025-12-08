@@ -434,7 +434,6 @@
             </div>
         </div>
     </section>
-
     <!-- Contact Section -->
     <section id="contact" class="py-16 bg-warm-gray">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -501,7 +500,6 @@
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -539,7 +537,6 @@
             <i class="fab fa-whatsapp text-2xl"></i>
         </a>
     </div>
-
     <!-- Booking Modal -->
     <div id="booking-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-8">
@@ -631,21 +628,61 @@
             alert('Thank you for your message! I will get back to you within 24 hours.');
             this.reset();
         });
+// NEW BOOKING MODAL SUBMISSION HANDLER (Google Sheets Connector)
+        const scriptURL = "https://script.google.com/macros/s/AKfycbxloeI1DNhFZkA7Hcv2iPlfj9BHZoTyNOb5t6t9vMDs9H0PLuVrXV7Ll3aOiRS0jDeR/exec";  
+        const modalForm = document.getElementById("booking-form");
+        const modal = document.getElementById('booking-modal');
+        const statusDisplay = modal.querySelector('button[type="submit"]');
 
-        // Booking form submission
-        document.getElementById('booking-form').addEventListener('submit', function(e) {
+        modalForm.addEventListener("submit", function(e) {
             e.preventDefault();
-            const name = document.getElementById('booking-name').value;
-            const email = document.getElementById('booking-email').value;
-            const phone = document.getElementById('booking-phone').value;
-            const sessionType = document.getElementById('session-type').value;
-            const date = document.getElementById('preferred-date').value;
             
-            alert('Booking request submitted successfully! I will contact you within 24 hours to confirm your appointment.');
-            closeBookingForm();
-            this.reset();
+            // 1. Prepare Data from Modal Fields
+            const formData = {
+                name: document.getElementById('booking-name').value,
+                email: document.getElementById('booking-email').value,
+                phone: document.getElementById('booking-phone').value,
+                // Include other fields from your modal form
+                sessionType: document.getElementById('session-type').value,
+                preferredDate: document.getElementById('preferred-date').value,
+                message: document.getElementById('booking-notes').value,
+            };
+
+            const originalButtonText = statusDisplay.innerHTML;
+            statusDisplay.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending...';
+            statusDisplay.disabled = true;
+
+            // 2. Send Data using fetch()
+            fetch(scriptURL, {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    statusDisplay.innerHTML = 'Success! Check Email.';
+                    setTimeout(() => {
+                        closeBookingForm(); // Close the modal
+                        modalForm.reset();  // Clear the form
+                        statusDisplay.innerHTML = originalButtonText;
+                        statusDisplay.disabled = false;
+                    }, 2000);
+                } else {
+                    statusDisplay.innerHTML = 'Error: Try again.';
+                    statusDisplay.disabled = false;
+                }
+            })
+            .catch(err => {
+                statusDisplay.innerHTML = 'Network Error.';
+                statusDisplay.disabled = false;
+                console.error(err);
+            });
         });
 
+        // ... (Keep the rest of your original script block below this)
         // Close modal when clicking outside
         document.getElementById('booking-modal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -658,6 +695,7 @@
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9838c48eb2573517',t:'MTc1ODYxNzE0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
